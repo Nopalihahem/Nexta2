@@ -10,7 +10,6 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* LIGHT MODE (Default) */
   --bg: #faf8f6;
   --white: #ffffff;
   --text: #1a1715;
@@ -21,82 +20,40 @@
   --accent-soft: #f5c4ae;
   --pill-bg: #f0ebe6;
 
-  /* Gradient mesh colors (Light) */
-  --g1: #f8c5a0;
-  --g2: #f4a8c0;
-  --g3: #c4b0e8;
-  --g4: #a8c8f0;
-  --g5: #f0d4a8;
+  --g1: #f8c5a0; --g2: #f4a8c0; --g3: #c4b0e8; --g4: #a8c8f0; --g5: #f0d4a8;
 }
 
-/* ─── DARK MODE VARIABLES ─── */
 body.dark-mode {
-  --bg: #141210;
-  --white: #1e1b19;
-  --text: #f0ebe6;
-  --text-mid: #a39c98;
-  --text-light: #7a736f;
-  --border: #332d29;
-  --accent: #e86c3a;
-  --accent-soft: #7a3e26;
-  --pill-bg: #24201d;
-
-  /* Gradient mesh colors (Dark / Muted) */
-  --g1: #5c3c26;
-  --g2: #5c2d3a;
-  --g3: #3b324d;
-  --g4: #2d3b4d;
-  --g5: #4d402d;
+  --bg: #141210; --white: #1e1b19; --text: #f0ebe6; --text-mid: #a39c98;
+  --text-light: #7a736f; --border: #332d29; --accent: #e86c3a;
+  --accent-soft: #7a3e26; --pill-bg: #24201d;
+  --g1: #5c3c26; --g2: #5c2d3a; --g3: #3b324d; --g4: #2d3b4d; --g5: #4d402d;
 }
 
 html, body {
-  height: 100%;
-  font-family: 'Instrument Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  overflow-x: hidden;
+  height: 100%; font-family: 'Instrument Sans', sans-serif;
+  background: var(--bg); color: var(--text); overflow-x: hidden;
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* ─── FLOATING THEME TOGGLE ─── */
 .theme-toggle-btn {
-  position: fixed;
-  top: 1.5rem;
-  right: 1.5rem;
-  z-index: 100;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
+  position: fixed; top: 1.5rem; right: 1.5rem; z-index: 100;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); color: var(--text);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; cursor: pointer; transition: 0.2s;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 .theme-toggle-btn:hover { transform: scale(1.08); background: var(--pill-bg); }
 body.dark-mode .theme-toggle-btn { background: rgba(30, 30, 30, 0.4); }
 
-/* ─── MESH GRADIENT BACKGROUND ─── */
 .mesh-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-  opacity: 0.8;
-  transition: opacity 0.4s ease;
+  position: fixed; inset: 0; z-index: 0; overflow: hidden;
+  pointer-events: none; opacity: 0.8; transition: opacity 0.4s ease;
 }
-
 .mesh-bg::before {
-  content: '';
-  position: absolute;
-  inset: -50%;
+  content: ''; position: absolute; inset: -50%;
   background:
     radial-gradient(ellipse 60% 50% at 20% 20%, var(--g1) 0%, transparent 60%),
     radial-gradient(ellipse 50% 60% at 80% 10%, var(--g2) 0%, transparent 55%),
@@ -107,707 +64,241 @@ body.dark-mode .theme-toggle-btn { background: rgba(30, 30, 30, 0.4); }
   animation: meshDrift 18s ease-in-out infinite alternate;
   transition: background 0.5s ease;
 }
-
 @keyframes meshDrift {
-  0%   { transform: scale(1) translate(0%, 0%); }
-  33%  { transform: scale(1.04) translate(1%, -1.5%); }
-  66%  { transform: scale(1.02) translate(-1.5%, 1%); }
+  0% { transform: scale(1) translate(0%, 0%); }
+  33% { transform: scale(1.04) translate(1%, -1.5%); }
+  66% { transform: scale(1.02) translate(-1.5%, 1%); }
   100% { transform: scale(1.05) translate(0.5%, 1.5%); }
 }
 
-/* ─── CARD (white pill container) ─── */
 .card {
-  position: relative;
-  z-index: 1;
-  background: rgba(255,255,255,0.82);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-radius: 32px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 1px 0 rgba(255,255,255,0.9) inset;
+  position: relative; z-index: 1;
+  background: rgba(255,255,255,0.82); backdrop-filter: blur(24px);
+  border-radius: 32px; box-shadow: 0 8px 40px rgba(0,0,0,0.08);
   transition: background 0.4s, box-shadow 0.4s;
 }
-
 body.dark-mode .card {
   background: rgba(30,27,25,0.82);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.05) inset;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
 }
 
-/* ─── LAYOUT ─── */
 #app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  position: relative;
-  z-index: 1;
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 1.5rem;
+  position: relative; z-index: 1;
 }
 
-/* ─── SCREENS ─── */
 .screen { display: none; width: 100%; max-width: 480px; }
 .screen.active { display: flex; flex-direction: column; }
 
-/* ─── WELCOME SCREEN ─── */
-#welcome-screen {
-  align-items: center;
-  text-align: center;
-  gap: 2.5rem;
-  animation: fadeUp 0.6s ease both;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.logo-mark {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  color: var(--text-mid);
-}
-
-.logo-dot {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--g1), var(--g2));
-  display: inline-block;
-}
-
-.welcome-headline {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.4rem, 8vw, 3.2rem);
-  font-weight: 400;
-  line-height: 1.15;
-  color: var(--text);
-}
-
-.welcome-headline em {
-  font-style: italic;
-  color: var(--accent);
-}
-
-.welcome-sub {
-  font-size: 0.9rem;
-  color: var(--text-mid);
-  line-height: 1.6;
-  max-width: 320px;
-}
+/* Welcome Screen */
+#welcome-screen { align-items: center; text-align: center; gap: 2.5rem; animation: fadeUp 0.6s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.logo-mark { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 500; color: var(--text-mid); }
+.logo-dot { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, var(--g1), var(--g2)); }
+.welcome-headline { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 8vw, 3.2rem); font-weight: 400; line-height: 1.15; }
+.welcome-headline em { font-style: italic; color: var(--accent); }
+.welcome-sub { font-size: 0.9rem; color: var(--text-mid); line-height: 1.6; max-width: 320px; }
 
 .btn-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.85rem 2rem;
-  border-radius: 999px;
-  border: none;
-  cursor: pointer;
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s, background 0.2s, color 0.2s;
-  white-space: nowrap;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.85rem 2rem; border-radius: 999px; border: none; cursor: pointer;
+  font-family: 'Instrument Sans', sans-serif; font-size: 0.8rem; font-weight: 500;
+  transition: 0.15s; white-space: nowrap;
 }
-
 .btn-pill:active { transform: scale(0.97); }
-
-.btn-primary {
-  background: var(--text);
-  color: var(--bg); /* auto adjusts in dark mode */
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-}
-.btn-primary:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.25); transform: translateY(-1px); }
-.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
-
+.btn-primary { background: var(--text); color: var(--bg); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.btn-primary:hover { transform: translateY(-1px); }
 body.dark-mode .btn-primary { color: var(--bg); background: var(--text); }
-
-.btn-ghost {
-  background: var(--pill-bg);
-  color: var(--text);
-  border: 1px solid var(--border);
-}
+.btn-ghost { background: var(--pill-bg); color: var(--text); border: 1px solid var(--border); }
 .btn-ghost:hover { background: var(--border); }
 
-.btn-accent {
-  background: var(--accent);
-  color: white;
-  box-shadow: 0 4px 16px rgba(232,108,58,0.25);
-}
-.btn-accent:hover { box-shadow: 0 6px 20px rgba(232,108,58,0.35); transform: translateY(-1px); }
-
-/* ─── UPLOAD SCREEN ─── */
-#upload-screen {
-  gap: 1.2rem;
-  animation: fadeUp 0.4s ease both;
-}
-
-.upload-card {
-  padding: 2.5rem 2rem;
-  gap: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.upload-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  font-weight: 400;
-}
-
+/* Upload Screen */
+#upload-screen { gap: 1.2rem; animation: fadeUp 0.4s ease; }
+.upload-card { padding: 2.5rem 2rem; gap: 1.2rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.upload-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 400; }
 .drop-zone {
-  width: 100%;
-  border: 1.5px dashed var(--border);
-  border-radius: 20px;
-  padding: 2rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  position: relative;
-  transition: border-color 0.2s, background 0.2s;
-  background: rgba(250,248,246,0.6);
+  width: 100%; border: 1.5px dashed var(--border); border-radius: 20px;
+  padding: 2rem 1.5rem; display: flex; flex-direction: column; align-items: center;
+  gap: 0.75rem; cursor: pointer; position: relative; background: rgba(250,248,246,0.6);
 }
-
 body.dark-mode .drop-zone { background: rgba(20,18,16,0.6); }
-
-.drop-zone:hover, .drop-zone.dragging {
-  border-color: var(--accent-soft);
-  background: rgba(245,196,174,0.1);
-}
-
-.drop-zone input[type=file] {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.drop-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--g1), var(--g2));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-}
-
-.drop-label {
-  font-size: 0.82rem;
-  color: var(--text-mid);
-  line-height: 1.6;
-}
+.drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.drop-icon { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--g1), var(--g2)); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+.drop-label { font-size: 0.82rem; color: var(--text-mid); }
 .drop-label strong { color: var(--text); font-weight: 500; }
+.file-tags { display: flex; gap: 0.4rem; justify-content: center; }
+.file-tag { font-size: 0.65rem; padding: 0.2rem 0.7rem; border-radius: 999px; background: var(--pill-bg); color: var(--text-mid); border: 1px solid var(--border); }
 
-.file-tags {
-  display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.file-tag {
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  padding: 0.2rem 0.7rem;
-  border-radius: 999px;
-  background: var(--pill-bg);
-  color: var(--text-mid);
-  border: 1px solid var(--border);
-}
-
-.divider-row {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  width: 100%;
-  color: var(--text-light);
-  font-size: 0.72rem;
-}
-.divider-row::before, .divider-row::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
+.divider-row { display: flex; align-items: center; gap: 0.8rem; width: 100%; color: var(--text-light); font-size: 0.72rem; }
+.divider-row::before, .divider-row::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
 textarea {
-  width: 100%;
-  background: rgba(255,255,255,0.7);
-  border: 1.5px solid var(--border);
-  color: var(--text);
-  font-family: 'Playfair Display', serif;
-  font-size: 0.95rem;
-  padding: 1rem 1.2rem;
-  resize: vertical;
-  min-height: 100px;
-  outline: none;
-  border-radius: 16px;
-  transition: border-color 0.2s, background 0.4s;
-  line-height: 1.6;
+  width: 100%; background: rgba(255,255,255,0.7); border: 1.5px solid var(--border);
+  color: var(--text); font-family: 'Playfair Display', serif; font-size: 0.95rem;
+  padding: 1rem 1.2rem; min-height: 100px; border-radius: 16px; outline: none;
 }
 body.dark-mode textarea { background: rgba(20,18,16,0.6); }
 
-textarea:focus { border-color: var(--accent-soft); }
-textarea::placeholder { color: var(--text-light); font-style: italic; }
-
-/* Mode row */
-.mode-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background: rgba(255,255,255,0.7);
-  border: 1.5px solid var(--border);
-  border-radius: 14px;
-  width: 100%;
-}
-body.dark-mode .mode-row { background: rgba(20,18,16,0.6); }
-
-.mode-label {
-  font-size: 0.78rem;
-  color: var(--text-mid);
-}
-
-select {
-  background: var(--pill-bg);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 0.75rem;
-  padding: 0.3rem 0.7rem;
-  border-radius: 999px;
-  outline: none;
-  cursor: pointer;
-}
-
-.word-count-row {
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background: rgba(255,255,255,0.7);
-  border: 1.5px solid var(--border);
-  border-radius: 14px;
-  width: 100%;
-}
-body.dark-mode .word-count-row { background: rgba(20,18,16,0.6); }
+/* Controls */
+.mode-row { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; border: 1.5px solid var(--border); border-radius: 14px; width: 100%; }
+.mode-label { font-size: 0.78rem; color: var(--text-mid); }
+select { background: var(--pill-bg); border: 1px solid var(--border); color: var(--text); padding: 0.3rem 0.7rem; border-radius: 999px; outline: none; }
+.word-count-row { display: none; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; border: 1.5px solid var(--border); border-radius: 14px; width: 100%; }
 .word-count-row.visible { display: flex; }
+input[type=range] { -webkit-appearance: none; width: 110px; height: 3px; background: var(--border); border-radius: 999px; outline: none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--accent); border-radius: 50%; cursor: pointer; }
+.range-val { font-size: 0.75rem; color: var(--accent); font-weight: 500; text-align: right; }
+.btn-row { display: flex; gap: 0.6rem; width: 100%; }
+.btn-row .btn-pill { flex: 1; }
 
-input[type=range] {
-  -webkit-appearance: none;
-  width: 110px;
-  height: 3px;
-  background: var(--border);
-  border-radius: 999px;
-  outline: none;
-  cursor: pointer;
-}
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
-  background: var(--accent);
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(232,108,58,0.3);
-}
-
-.range-val {
-  font-size: 0.75rem;
-  color: var(--accent);
-  font-weight: 500;
-  min-width: 3rem;
-  text-align: right;
-}
-
-.loading-bar {
-  display: none;
-  width: 100%;
-  height: 3px;
-  background: var(--border);
-  border-radius: 999px;
-  overflow: hidden;
-}
+/* Loading */
+.loading-bar { display: none; width: 100%; height: 3px; background: var(--border); border-radius: 999px; overflow: hidden; }
 .loading-bar.active { display: block; }
-.loading-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--g1), var(--accent), var(--g2));
-  border-radius: 999px;
-  animation: shimmer 1.4s ease-in-out infinite;
-  background-size: 200% 100%;
-}
-@keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-.loading-label {
-  display: none;
-  font-size: 0.75rem;
-  color: var(--text-mid);
-  text-align: center;
-  animation: pulse 1.6s ease-in-out infinite;
-}
+.loading-bar-fill { height: 100%; background: linear-gradient(90deg, var(--g1), var(--accent), var(--g2)); animation: shimmer 1.4s infinite; background-size: 200% 100%; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.loading-label { display: none; font-size: 0.75rem; color: var(--text-mid); text-align: center; animation: pulse 1.6s infinite; }
 .loading-label.active { display: block; }
 @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-.btn-row {
-  display: flex;
-  gap: 0.6rem;
-  width: 100%;
-}
-.btn-row .btn-pill { flex: 1; justify-content: center; }
-
-/* ─── FOOTNOTE DIALOG ─── */
-#footnote-dialog {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 1.5rem;
-  background: rgba(26,23,21,0.35);
-  backdrop-filter: blur(6px);
-}
-#footnote-dialog.active { display: flex; }
-
-.fn-sheet {
-  width: 100%;
-  max-width: 480px;
-  padding: 2rem;
-  border-radius: 28px 28px 20px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
-}
-@keyframes slideUp {
-  from { transform: translateY(40px); opacity: 0; }
-  to   { transform: translateY(0); opacity: 1; }
-}
-
-.fn-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem;
-  font-weight: 400;
-}
-.fn-sub { font-size: 0.82rem; color: var(--text-mid); line-height: 1.5; }
-.fn-btns { display: flex; gap: 0.7rem; }
-.fn-btns .btn-pill { flex: 1; justify-content: center; }
-
 /* ─── READER SCREEN ─── */
-#reader-screen {
-  min-height: 100vh;
-  width: 100%;
-  max-width: 100%;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: stretch;
-  gap: 0;
-}
+#reader-screen { min-height: 100vh; width: 100%; max-width: 100%; flex-direction: column; align-items: stretch; gap: 0; }
+#reader-screen.active { display: flex; }
 
-#reader-screen.active {
-  display: flex;
-}
-
-/* Progress */
-.reader-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: rgba(0,0,0,0.06);
-  z-index: 50;
-}
+.reader-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: rgba(0,0,0,0.06); z-index: 50; }
 body.dark-mode .reader-progress { background: rgba(255,255,255,0.06); }
-
-.reader-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--g1), var(--accent));
-  transition: width 0.4s ease;
-  width: 0%;
-}
+.reader-progress-fill { height: 100%; background: linear-gradient(90deg, var(--g1), var(--accent)); transition: width 0.4s ease; width: 0%; }
 
 /* Top bar */
 .reader-topbar {
-  position: fixed;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.4rem 0.8rem;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.75);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 50;
+  display: flex; align-items: center; gap: 0.8rem; padding: 0.4rem 0.8rem;
+  border-radius: 999px; background: rgba(255,255,255,0.85); backdrop-filter: blur(16px);
+  border: 1px solid var(--border); box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
-body.dark-mode .reader-topbar { background: rgba(30,27,25,0.75); }
+body.dark-mode .reader-topbar { background: rgba(30,27,25,0.85); }
 
-.topbar-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 0.85rem;
-  font-style: italic;
-  color: var(--accent);
+.btn-toc {
+  background: transparent; border: none; color: var(--text); font-size: 1.1rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  padding: 0.2rem; border-radius: 50%; transition: background 0.2s;
 }
+.btn-toc:hover { background: var(--pill-bg); }
+.topbar-logo { font-family: 'Playfair Display', serif; font-size: 0.85rem; font-style: italic; color: var(--accent); }
 .topbar-sep { color: var(--border); }
-.topbar-counter {
-  font-size: 0.72rem;
-  color: var(--text-mid);
-  font-weight: 400;
-}
-.topbar-estimate {
-  font-size: 0.72rem;
-  color: var(--text-light);
-}
+.topbar-counter, .topbar-estimate { font-size: 0.72rem; color: var(--text-mid); }
 
 /* Stage */
 .reader-stage {
-  flex: 1;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 6rem 2rem 10rem;
-  position: relative;
+  flex: 1; min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 6rem 2rem 10rem;
 }
-
 .chunk-type-badge {
-  display: none;
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.8rem;
-  border-radius: 999px;
-  background: var(--pill-bg);
-  color: var(--text-light);
-  border: 1px solid var(--border);
-  margin-bottom: 1.5rem;
+  display: none; font-size: 0.65rem; padding: 0.25rem 0.8rem; border-radius: 999px;
+  background: var(--pill-bg); color: var(--text-light); border: 1px solid var(--border); margin-bottom: 1.5rem;
 }
-.chunk-type-badge.footnote {
-  display: inline-block;
-  background: #fff3ee;
-  color: var(--accent);
-  border-color: var(--accent-soft);
-}
-body.dark-mode .chunk-type-badge.footnote {
-  background: rgba(232,108,58,0.1);
-}
-
 .chunk-text {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.5rem, 4vw, 2.5rem); /* Default CSS fallback */
-  font-weight: 400;
-  line-height: 1.45;
-  color: var(--text);
-  text-align: center;
-  max-width: 640px;
-  opacity: 0;
-  transform: translateY(14px);
+  font-family: 'Playfair Display', serif; font-weight: 400; line-height: 1.45;
+  text-align: center; max-width: 640px; opacity: 0; transform: translateY(14px);
   transition: opacity 0.38s ease, transform 0.38s ease, font-size 0.2s;
 }
+.chunk-text.visible { opacity: 1; transform: translateY(0); }
 
-.chunk-text.visible {
-  opacity: 1;
-  transform: translateY(0);
+.chunk-image {
+  display: none; max-width: 100%; max-height: 60vh; border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1); opacity: 0; transform: scale(0.95);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
+.chunk-image.visible { opacity: 1; transform: scale(1); }
 
-/* Bottom controls */
+/* Bottom Controls */
 .reader-bottom {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 1rem 1.5rem 1.5rem;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; display: flex;
+  flex-direction: column; align-items: center; gap: 0.8rem; padding: 1rem 1.5rem 1.5rem;
   background: linear-gradient(to top, rgba(250,248,246,0.95) 60%, transparent);
 }
-body.dark-mode .reader-bottom {
-  background: linear-gradient(to top, rgba(20,18,16,0.95) 60%, transparent);
-}
+body.dark-mode .reader-bottom { background: linear-gradient(to top, rgba(20,18,16,0.95) 60%, transparent); }
 
-.ctrl-row {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.ctrl-icon-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1.5px solid var(--border);
-  background: rgba(255,255,255,0.8);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: transform 0.15s, background 0.15s;
-  backdrop-filter: blur(12px);
-}
+.ctrl-row { display: flex; align-items: center; gap: 0.6rem; }
+.ctrl-icon-btn { width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid var(--border); background: rgba(255,255,255,0.8); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.15s; }
 body.dark-mode .ctrl-icon-btn { background: rgba(30,27,25,0.8); }
+.ctrl-icon-btn:hover { transform: scale(1.06); }
+.ctrl-play-btn { width: 56px; height: 56px; border-radius: 50%; border: none; background: var(--text); color: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: 0.15s; }
+.ctrl-play-btn:hover { transform: scale(1.05); }
 
-.ctrl-icon-btn:hover { background: var(--white); transform: scale(1.06); }
-.ctrl-icon-btn:active { transform: scale(0.94); }
-
-.ctrl-play-btn {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: none;
-  background: var(--text);
-  color: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-  transition: transform 0.15s, box-shadow 0.15s;
+/* ─── SIDEBAR TOC ─── */
+.toc-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 199;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(4px);
 }
-.ctrl-play-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
-.ctrl-play-btn:active { transform: scale(0.95); }
+.toc-overlay.active { opacity: 1; pointer-events: auto; }
 
-.speed-row {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.72rem;
-  color: var(--text-light);
+.toc-sidebar {
+  position: fixed; top: 0; left: -320px; width: 300px; height: 100%;
+  background: var(--bg); z-index: 200; box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  display: flex; flex-direction: column;
 }
+.toc-sidebar.active { transform: translateX(320px); }
 
-.key-hint {
-  font-size: 0.64rem;
-  color: var(--text-light);
-  display: none;
+.toc-header {
+  padding: 1.5rem; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
 }
-@media (min-width: 640px) { .key-hint { display: block; } }
+.toc-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; }
+.btn-close-toc { background: none; border: none; font-size: 1.2rem; color: var(--text-mid); cursor: pointer; }
 
-.key-tag {
-  display: inline-block;
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 0.05rem 0.35rem;
-  font-size: 0.6rem;
+.toc-list {
+  flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem;
 }
+.toc-item {
+  text-align: left; background: none; border: none; padding: 0.8rem 1rem;
+  font-family: 'Instrument Sans', sans-serif; font-size: 0.85rem; color: var(--text);
+  border-radius: 12px; cursor: pointer; transition: background 0.2s; line-height: 1.4;
+}
+.toc-item:hover { background: var(--pill-bg); }
+.toc-item.active { background: var(--accent-soft); color: var(--text); font-weight: 500; }
+body.dark-mode .toc-item.active { background: rgba(232,108,58,0.2); }
 
-/* ─── END OVERLAY ─── */
-#end-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 150;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 1.2rem;
-  text-align: center;
-  padding: 2rem;
-  background: rgba(250,248,246,0.88);
-  backdrop-filter: blur(20px);
-}
+/* End Overlay */
+#end-overlay { display: none; position: fixed; inset: 0; z-index: 150; align-items: center; justify-content: center; flex-direction: column; gap: 1.2rem; background: rgba(250,248,246,0.88); backdrop-filter: blur(20px); }
 body.dark-mode #end-overlay { background: rgba(20,18,16,0.88); }
 #end-overlay.active { display: flex; }
-
-.end-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.4rem;
-  font-weight: 400;
-  color: var(--text);
-}
-.end-sub { font-size: 0.88rem; color: var(--text-mid); }
-.end-btns { display: flex; gap: 0.7rem; flex-wrap: wrap; justify-content: center; }
+.end-title { font-family: 'Playfair Display', serif; font-size: 2.4rem; }
 </style>
 </head>
 <body>
 
-<!-- THEME TOGGLE BUTTON -->
 <button class="theme-toggle-btn" id="theme-toggle" title="Ganti Tema">🌙</button>
-
-<!-- Animated mesh background -->
 <div class="mesh-bg"></div>
 
 <div id="app">
-
-  <!-- ─── WELCOME SCREEN ─── -->
+  <!-- WELCOME -->
   <div id="welcome-screen" class="screen active">
-    <div class="logo-mark">
-      <span class="logo-dot"></span>
-      nexta
-    </div>
-    <h1 class="welcome-headline">
-      Baca dengan<br><em>tenang</em>, satu<br>kalimat.
-    </h1>
-    <p class="welcome-sub">Unggah buku, artikel, atau PDF Anda — Nexta menyajikannya satu kalimat per satu, tanpa scroll.</p>
-    
+    <div class="logo-mark"><span class="logo-dot"></span>nexta</div>
+    <h1 class="welcome-headline">Baca dengan<br><em>tenang</em>, satu<br>kalimat.</h1>
+    <p class="welcome-sub">Unggah buku, artikel, atau PDF Anda — Nexta menyajikannya satu kalimat per satu, lengkap dengan gambar & daftar isi.</p>
     <div style="display:flex; flex-direction:column; gap:0.8rem; align-items:center;">
-      <button class="btn-pill btn-primary" id="btn-to-upload">
-        → Mulai baca baru
-      </button>
-      <button class="btn-pill btn-ghost" id="btn-resume" style="display:none;">
-        ↺ Lanjutkan bacaan terakhir
-      </button>
+      <button class="btn-pill btn-primary" id="btn-to-upload">→ Mulai baca baru</button>
+      <button class="btn-pill btn-ghost" id="btn-resume" style="display:none;">↺ Lanjutkan bacaan terakhir</button>
     </div>
   </div>
 
-  <!-- ─── UPLOAD SCREEN ─── -->
+  <!-- UPLOAD -->
   <div id="upload-screen" class="screen">
     <div class="card upload-card">
       <h2 class="upload-title">Pilih sumber bacaan</h2>
-
-      <!-- Drop zone -->
       <div class="drop-zone" id="drop-zone">
         <input type="file" id="file-input" accept=".txt,.epub,application/pdf,text/plain">
         <div class="drop-icon">📄</div>
-        <div class="drop-label">
-          <strong>Ketuk untuk unggah</strong><br>atau seret file ke sini
-        </div>
-        <div class="file-tags">
-          <span class="file-tag">TXT</span>
-          <span class="file-tag">PDF</span>
-          <span class="file-tag">EPUB</span>
-        </div>
+        <div class="drop-label"><strong>Ketuk untuk unggah</strong><br>atau seret file ke sini</div>
       </div>
-
       <div class="divider-row">atau tempel teks</div>
-
       <textarea id="paste-input" placeholder="Tempel teks Anda di sini…" rows="4"></textarea>
 
-      <!-- Loading -->
       <div class="loading-bar" id="loading-bar"><div class="loading-bar-fill"></div></div>
       <div class="loading-label" id="loading-label">Membaca dokumen…</div>
-      <div id="ai-badge" style="display:none;align-items:center;gap:0.5rem;font-size:0.72rem;color:var(--accent);background:var(--pill-bg);border:1px solid var(--accent-soft);border-radius:999px;padding:0.3rem 0.9rem;">
-        <span style="animation:pulse 1.4s infinite">✦</span> AI sedang merapikan teks PDF Anda
-      </div>
 
-      <!-- Mode -->
       <div class="mode-row">
         <span class="mode-label">Mode tampilan</span>
         <select id="mode-select">
@@ -815,7 +306,6 @@ body.dark-mode #end-overlay { background: rgba(20,18,16,0.88); }
           <option value="words">Per jumlah kata</option>
         </select>
       </div>
-
       <div class="word-count-row" id="word-count-row">
         <span class="mode-label">Jumlah kata</span>
         <div style="display:flex;align-items:center;gap:0.7rem;">
@@ -823,7 +313,6 @@ body.dark-mode #end-overlay { background: rgba(20,18,16,0.88); }
           <span class="range-val" id="word-count-val">5 kata</span>
         </div>
       </div>
-
       <div class="btn-row">
         <button class="btn-pill btn-ghost" id="btn-back-welcome">← Kembali</button>
         <button class="btn-pill btn-primary" id="btn-start" disabled>Mulai →</button>
@@ -831,15 +320,13 @@ body.dark-mode #end-overlay { background: rgba(20,18,16,0.88); }
     </div>
   </div>
 
-  <!-- ─── READER SCREEN ─── -->
+  <!-- READER -->
   <div id="reader-screen" class="screen">
-    <!-- Progress bar -->
-    <div class="reader-progress">
-      <div class="reader-progress-fill" id="progress-fill"></div>
-    </div>
-
-    <!-- Top bar -->
+    <div class="reader-progress"><div class="reader-progress-fill" id="progress-fill"></div></div>
+    
     <div class="reader-topbar">
+      <button class="btn-toc" id="btn-open-toc" title="Daftar Isi">☰</button>
+      <span class="topbar-sep">·</span>
       <span class="topbar-logo">Nexta</span>
       <span class="topbar-sep">·</span>
       <span class="topbar-counter" id="topbar-counter">1 / 1</span>
@@ -847,748 +334,369 @@ body.dark-mode #end-overlay { background: rgba(20,18,16,0.88); }
       <span class="topbar-estimate" id="time-estimate">~0 mnt</span>
     </div>
 
-    <!-- Stage -->
     <div class="reader-stage">
-      <span class="chunk-type-badge" id="chunk-badge">catatan kaki</span>
+      <span class="chunk-type-badge" id="chunk-badge"></span>
       <p class="chunk-text" id="chunk-text"></p>
+      <img class="chunk-image" id="chunk-img" alt="Ilustrasi Dokumen">
     </div>
 
-    <!-- Bottom controls -->
     <div class="reader-bottom">
       <div class="ctrl-row">
-        <!-- Font Controls -->
-        <button class="ctrl-icon-btn" id="btn-font-dec" title="Perkecil Teks" style="font-family: serif;">A-</button>
-        
-        <button class="ctrl-icon-btn" id="btn-prev" title="Sebelumnya">←</button>
-        <button class="ctrl-play-btn" id="btn-play" title="Putar/Jeda">▶</button>
-        <button class="ctrl-icon-btn" id="btn-next" title="Berikutnya">→</button>
-        
-        <!-- Font Controls -->
-        <button class="ctrl-icon-btn" id="btn-font-inc" title="Perbesar Teks" style="font-family: serif;">A+</button>
+        <button class="ctrl-icon-btn" id="btn-font-dec" style="font-family: serif;">A-</button>
+        <button class="ctrl-icon-btn" id="btn-prev">←</button>
+        <button class="ctrl-play-btn" id="btn-play">▶</button>
+        <button class="ctrl-icon-btn" id="btn-next">→</button>
+        <button class="ctrl-icon-btn" id="btn-font-inc" style="font-family: serif;">A+</button>
       </div>
-      
       <div class="speed-row">
-        <span>Lambat</span>
-        <input type="range" id="speed-range" min="1" max="10" value="5">
-        <span>Cepat</span>
-        <span class="range-val" id="speed-val">4s</span>
+        <span>Lambat</span><input type="range" id="speed-range" min="1" max="10" value="5"><span>Cepat</span>
       </div>
       <div class="ctrl-row" style="gap:1rem;">
         <button class="btn-pill btn-ghost" id="btn-back-reader" style="font-size:0.72rem;padding:0.5rem 1.2rem;">✕ Keluar</button>
       </div>
-      <div class="key-hint">
-        <span class="key-tag">←</span> Sebelumnya &ensp;
-        <span class="key-tag">Spasi</span> Putar/Jeda &ensp;
-        <span class="key-tag">→</span> Berikutnya
-      </div>
-    </div>
-  </div>
-
-</div><!-- #app -->
-
-<!-- ─── FOOTNOTE DIALOG ─── -->
-<div id="footnote-dialog">
-  <div class="card fn-sheet">
-    <div>
-      <p class="fn-title">Ada catatan kaki 📎</p>
-      <p class="fn-sub" id="fn-sub-text">Teks ini memiliki catatan kaki. Apakah Anda ingin membacanya sekarang?</p>
-    </div>
-    <div class="fn-btns">
-      <button class="btn-pill btn-ghost" id="fn-skip">Lewati</button>
-      <button class="btn-pill btn-accent" id="fn-read">Baca catatan kaki →</button>
     </div>
   </div>
 </div>
 
-<!-- ─── END OVERLAY ─── -->
+<!-- SIDEBAR TOC -->
+<div class="toc-overlay" id="toc-overlay"></div>
+<div class="toc-sidebar" id="toc-sidebar">
+  <div class="toc-header">
+    <span class="toc-title">Daftar Isi</span>
+    <button class="btn-close-toc" id="btn-close-toc">✕</button>
+  </div>
+  <div class="toc-list" id="toc-list">
+    <!-- Diisi via JS -->
+    <p style="text-align:center; color:var(--text-light); font-size:0.8rem; margin-top:2rem;">Daftar isi tidak tersedia</p>
+  </div>
+</div>
+
 <div id="end-overlay">
   <p class="end-title">Selesai ✦</p>
-  <p class="end-sub">Anda telah membaca seluruh teks.</p>
-  <div class="end-btns">
+  <div style="display:flex; gap:0.7rem;">
     <button class="btn-pill btn-primary" id="btn-restart">Baca ulang</button>
-    <button class="btn-pill btn-ghost" id="btn-end-back">Kembali ke awal</button>
+    <button class="btn-pill btn-ghost" id="btn-end-back">Kembali</button>
   </div>
 </div>
 
 <script>
 // ══════════════════════════════════════════════
-//  STATE
+//  STATE & DEPENDENCIES
 // ══════════════════════════════════════════════
 const PDFJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
 
-let chunks = [];          // { text, type: 'body'|'footnote', fnGroup?: number }
+let chunks = [];    // { text, type: 'text'|'image', src: '', page: 1 }
+let tocData = [];   // { title: '', page: 1 }
 let current = 0;
 let playing = false;
 let timer = null;
 let pdfLib = null;
 let chunkMode = 'sentence';
 let wordsPerChunk = 5;
-let baseFontSize = 2.4;   // Default rem size
-
-// pending footnote group after body ends
-let pendingFootnoteGroup = null;
+let baseFontSize = 2.4;
 
 // ══════════════════════════════════════════════
-//  DOM REFS
+//  DOM ELEMENTS
 // ══════════════════════════════════════════════
-const welcomeScreen   = document.getElementById('welcome-screen');
-const uploadScreen    = document.getElementById('upload-screen');
-const readerScreen    = document.getElementById('reader-screen');
-const fileInput       = document.getElementById('file-input');
-const pasteInput      = document.getElementById('paste-input');
-const btnStart        = document.getElementById('btn-start');
-const btnToUpload     = document.getElementById('btn-to-upload');
-const btnResume       = document.getElementById('btn-resume');
-const btnBackWelcome  = document.getElementById('btn-back-welcome');
-const btnBackReader   = document.getElementById('btn-back-reader');
-const btnPlay         = document.getElementById('btn-play');
-const btnPrev         = document.getElementById('btn-prev');
-const btnNext         = document.getElementById('btn-next');
-const btnRestart      = document.getElementById('btn-restart');
-const btnEndBack      = document.getElementById('btn-end-back');
-const chunkText       = document.getElementById('chunk-text');
-const chunkBadge      = document.getElementById('chunk-badge');
-const topbarCounter   = document.getElementById('topbar-counter');
-const timeEstimate    = document.getElementById('time-estimate');
-const progressFill    = document.getElementById('progress-fill');
-const speedRange      = document.getElementById('speed-range');
-const speedVal        = document.getElementById('speed-val');
-const endOverlay      = document.getElementById('end-overlay');
-const dropZone        = document.getElementById('drop-zone');
-const loadingBar      = document.getElementById('loading-bar');
-const loadingLabel    = document.getElementById('loading-label');
-const modeSelect      = document.getElementById('mode-select');
-const wordCountRow    = document.getElementById('word-count-row');
-const wordCountInput  = document.getElementById('word-count-input');
-const wordCountVal    = document.getElementById('word-count-val');
-const footnoteDialog  = document.getElementById('footnote-dialog');
-const fnSubText       = document.getElementById('fn-sub-text');
-const fnSkip          = document.getElementById('fn-skip');
-const fnRead          = document.getElementById('fn-read');
-const themeToggle     = document.getElementById('theme-toggle');
-const btnFontInc      = document.getElementById('btn-font-inc');
-const btnFontDec      = document.getElementById('btn-font-dec');
+const S = (id) => document.getElementById(id);
+const screens = ['welcome-screen', 'upload-screen', 'reader-screen'];
+function showScreen(id) { screens.forEach(s => S(s).classList.remove('active')); S(id).classList.add('active'); }
 
 // ══════════════════════════════════════════════
-//  THEME & FONT INITIALIZATION
+//  THEME & FONT
 // ══════════════════════════════════════════════
 let isDark = localStorage.getItem('nexta_theme') === 'dark';
-if (isDark) {
-  document.body.classList.add('dark-mode');
-  themeToggle.textContent = '☀️';
-}
-
-themeToggle.addEventListener('click', () => {
+if (isDark) { document.body.classList.add('dark-mode'); S('theme-toggle').textContent = '☀️'; }
+S('theme-toggle').addEventListener('click', () => {
   document.body.classList.toggle('dark-mode');
   isDark = document.body.classList.contains('dark-mode');
   localStorage.setItem('nexta_theme', isDark ? 'dark' : 'light');
-  themeToggle.textContent = isDark ? '☀️' : '🌙';
+  S('theme-toggle').textContent = isDark ? '☀️' : '🌙';
 });
 
-const savedFontSize = localStorage.getItem('nexta_fontsize');
-if (savedFontSize) {
-  baseFontSize = parseFloat(savedFontSize);
-  chunkText.style.fontSize = `${baseFontSize}rem`;
-}
-
-function updateFontSize() {
-  chunkText.style.fontSize = `${baseFontSize}rem`;
-  localStorage.setItem('nexta_fontsize', baseFontSize);
-}
-
-btnFontInc.addEventListener('click', () => { baseFontSize = Math.min(5, baseFontSize + 0.2); updateFontSize(); });
-btnFontDec.addEventListener('click', () => { baseFontSize = Math.max(1, baseFontSize - 0.2); updateFontSize(); });
+if (localStorage.getItem('nexta_fontsize')) baseFontSize = parseFloat(localStorage.getItem('nexta_fontsize'));
+function updateFont() { S('chunk-text').style.fontSize = `${baseFontSize}rem`; localStorage.setItem('nexta_fontsize', baseFontSize); }
+S('btn-font-inc').addEventListener('click', () => { baseFontSize = Math.min(5, baseFontSize + 0.2); updateFont(); });
+S('btn-font-dec').addEventListener('click', () => { baseFontSize = Math.max(1, baseFontSize - 0.2); updateFont(); });
 
 // ══════════════════════════════════════════════
-//  RESUME PROGRESS INITIALIZATION
+//  TOC SIDEBAR LOGIC
 // ══════════════════════════════════════════════
-if (localStorage.getItem('nexta_chunks') && localStorage.getItem('nexta_current')) {
-  btnResume.style.display = 'inline-flex';
-}
-
-btnResume.addEventListener('click', () => {
-  try {
-    chunks = JSON.parse(localStorage.getItem('nexta_chunks'));
-    current = parseInt(localStorage.getItem('nexta_current')) || 0;
-    if (chunks && chunks.length > 0) {
-      showScreen('reader-screen');
-      chunkText.style.fontSize = `${baseFontSize}rem`;
-      renderChunk(current, true);
-    }
-  } catch (e) {
-    alert("Gagal memuat sesi sebelumnya.");
-    console.error(e);
-  }
-});
-
-function saveProgress() {
-  try {
-    // Save state stringified
-    localStorage.setItem('nexta_chunks', JSON.stringify(chunks));
-    localStorage.setItem('nexta_current', current);
-    btnResume.style.display = 'inline-flex';
-  } catch(e) {
-    // If text exceeds localStorage 5MB quota, ignore silently
-    console.warn("Storage penuh, progress tidak tersimpan.");
-  }
-}
-
-// ══════════════════════════════════════════════
-//  SCREEN NAVIGATION
-// ══════════════════════════════════════════════
-function showScreen(id) {
-  [welcomeScreen, uploadScreen, readerScreen].forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-btnToUpload.addEventListener('click', () => showScreen('upload-screen'));
-btnBackWelcome.addEventListener('click', () => showScreen('welcome-screen'));
-btnBackReader.addEventListener('click', () => {
-  stopPlay();
-  endOverlay.classList.remove('active');
-  showScreen('upload-screen');
-});
-btnEndBack.addEventListener('click', () => {
-  endOverlay.classList.remove('active');
-  stopPlay();
-  showScreen('upload-screen');
-});
-
-// ══════════════════════════════════════════════
-//  SPEED & TIME ESTIMATE
-// ══════════════════════════════════════════════
-function getDelay() {
-  const v = parseInt(speedRange.value);
-  return Math.round(8500 - (v - 1) * 750);
-}
-
-function updateEstimateLabel() {
-  const displayChunks = chunks.filter(c => c.type !== 'fn_end');
-  const remaining = displayChunks.length - current - 1;
-  if (remaining <= 0) {
-    timeEstimate.textContent = 'Selesai';
+function renderToc() {
+  const list = S('toc-list');
+  list.innerHTML = '';
+  if (tocData.length === 0) {
+    list.innerHTML = `<p style="text-align:center; color:var(--text-light); font-size:0.8rem; margin-top:2rem;">Tidak ada daftar isi terdeteksi</p>`;
     return;
   }
-  const msRemaining = remaining * getDelay();
-  const mins = Math.ceil(msRemaining / 60000);
-  timeEstimate.textContent = `~${mins} mnt`;
-}
-
-speedRange.addEventListener('input', () => {
-  speedVal.textContent = (getDelay() / 1000).toFixed(1) + 's';
-  updateEstimateLabel();
-});
-speedVal.textContent = (getDelay() / 1000).toFixed(1) + 's';
-
-// ══════════════════════════════════════════════
-//  MODE CONTROLS
-// ══════════════════════════════════════════════
-modeSelect.addEventListener('change', () => {
-  chunkMode = modeSelect.value;
-  wordCountRow.classList.toggle('visible', chunkMode === 'words');
-});
-
-wordCountInput.addEventListener('input', () => {
-  wordsPerChunk = Math.max(1, Math.min(20, parseInt(wordCountInput.value) || 5));
-  wordCountInput.value = wordsPerChunk;
-  wordCountVal.textContent = wordsPerChunk + ' kata';
-});
-
-// ══════════════════════════════════════════════
-//  TEXT UTILITIES
-// ══════════════════════════════════════════════
-function cleanText(t) {
-  return t
-    .replace(/\r\n/g, '\n').replace(/\r/g, '\n')
-    .replace(/[ \t]+/g, ' ')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-}
-
-// ─── SENTENCE SPLITTER (order-safe state machine) ───
-function splitSentences(text) {
-  text = cleanText(text);
-  const raw = [];
-  let buf = '';
-
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
-    buf += ch;
-
-    if (/[.!?…]/.test(ch)) {
-      let j = i + 1;
-      while (j < text.length && text[j] === ' ') j++;
-      const nc = text[j];
-      const isEnd = j >= text.length
-        || /[\n"'»]/.test(nc)
-        || /[A-Z\u00C0-\u024F\d]/.test(nc);
-      if (isEnd) {
-        const s = buf.trim();
-        if (s.length > 2) raw.push(s);
-        buf = '';
-        i = j - 1;
+  tocData.forEach((item, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'toc-item';
+    btn.textContent = item.title;
+    btn.onclick = () => {
+      // Find chunk index by page
+      const targetIdx = chunks.findIndex(c => c.page >= item.page);
+      if (targetIdx !== -1) {
+        current = targetIdx;
+        renderChunk(current, true);
       }
-    } else if (ch === '\n') {
-      const s = buf.replace(/\n/g, ' ').trim();
-      if (s.length > 2) raw.push(s);
-      buf = '';
-    }
-  }
-  if (buf.trim().length > 2) raw.push(buf.trim());
-
-  // Merge orphan fragments
-  const merged = [];
-  for (let i = 0; i < raw.length; i++) {
-    if (i > 0 && raw[i].length < 25 && !/[.!?…]$/.test(raw[i - 1])) {
-      merged[merged.length - 1] += ' ' + raw[i];
-    } else {
-      merged.push(raw[i]);
-    }
-  }
-  return merged;
-}
-
-function splitByWords(text, n) {
-  const words = cleanText(text).split(/\s+/).filter(Boolean);
-  const out = [];
-  for (let i = 0; i < words.length; i += n) out.push(words.slice(i, i + n).join(' '));
-  return out;
-}
-
-// ─── SMART PDF PARSER ───
-async function extractPdfSmart(file) {
-  if (!pdfLib) {
-    await loadScript(PDFJS_URL);
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    pdfLib = pdfjsLib;
-  }
-
-  const ab = await file.arrayBuffer();
-  const pdf = await pdfLib.getDocument({ data: ab }).promise;
-
-  let bodyParts = [];
-  let footnoteParts = {};
-
-  for (let p = 1; p <= pdf.numPages; p++) {
-    const page = await pdf.getPage(p);
-    const vp = page.getViewport({ scale: 1 });
-    const pageH = vp.height;
-    const content = await page.getTextContent();
-    const items = content.items;
-
-    if (items.length === 0) continue;
-
-    const sizes = items.map(it => Math.round(Math.abs(it.transform[3]) * 10) / 10).filter(s => s > 0);
-    const sizeFreq = {};
-    sizes.forEach(s => sizeFreq[s] = (sizeFreq[s] || 0) + 1);
-    const bodySize = parseFloat(Object.entries(sizeFreq).sort((a, b) => b[1] - a[1])[0][0]);
-    const fnSizeThreshold = bodySize * 0.82;
-
-    const fnYThreshold = pageH * 0.22;
-    const isSeparator = (str) => /^[\-─—_\s]{3,}$/.test(str.trim());
-
-    let seenSeparator = false;
-    let pageBody = [];
-    let pageFn = [];
-
-    for (const item of items) {
-      const str = item.str;
-      if (!str.trim()) continue;
-
-      if (isSeparator(str)) { seenSeparator = true; continue; }
-
-      const itemSize = Math.abs(item.transform[3]);
-      const itemY = item.transform[5];
-      const distFromBottom = pageH - itemY;
-
-      const fnMarkerPattern = /^[\u00B9\u00B2\u00B3\u00B4-\u00B9\u2070-\u2079\[\(][0-9\*†‡]/;
-      const hasFnMarker = fnMarkerPattern.test(str.trim());
-      const isSmall = itemSize < fnSizeThreshold && itemSize > 0;
-      const inBottomZone = (pageH - itemY) / pageH < 0.22;
-
-      if (hasFnMarker || (isSmall && inBottomZone) || (seenSeparator && inBottomZone)) {
-        pageFn.push(str);
-      } else {
-        pageBody.push(str);
-      }
-    }
-
-    bodyParts.push(pageBody.join(' '));
-    if (pageFn.length > 0) {
-      footnoteParts[p] = pageFn;
-    }
-  }
-
-  return {
-    body: bodyParts.join('\n'),
-    footnotes: footnoteParts
-  };
-}
-
-// ─── BUILD CHUNK ARRAY ───
-function buildChunkArray(bodyText, footnotes) {
-  let textChunks;
-  if (chunkMode === 'words') {
-    textChunks = splitByWords(bodyText, wordsPerChunk).map(t => ({ text: t, type: 'body' }));
-  } else {
-    textChunks = splitSentences(bodyText).map(t => ({ text: t, type: 'body' }));
-  }
-
-  if (Object.keys(footnotes).length === 0) return textChunks;
-
-  const pageCount = Object.keys(footnotes).length;
-  const totalBodyChunks = textChunks.length;
-  const chunkPerPage = Math.max(1, Math.floor(totalBodyChunks / pageCount));
-
-  const result = [];
-  let fnGroupIdx = 0;
-  const fnPages = Object.keys(footnotes).map(Number).sort((a,b) => a-b);
-
-  for (let i = 0; i < textChunks.length; i++) {
-    result.push(textChunks[i]);
-    if (fnGroupIdx < fnPages.length && (i + 1) % chunkPerPage === 0) {
-      const pg = fnPages[fnGroupIdx];
-      const fnTexts = footnotes[pg];
-      const fnSents = splitSentences(fnTexts.join(' '));
-      for (const fs of fnSents) {
-        result.push({ text: fs, type: 'footnote', fnGroup: pg });
-      }
-      result.push({ text: '__FN_END__', type: 'fn_end', fnGroup: pg });
-      fnGroupIdx++;
-    }
-  }
-
-  while (fnGroupIdx < fnPages.length) {
-    const pg = fnPages[fnGroupIdx];
-    const fnTexts = footnotes[pg];
-    const fnSents = splitSentences(fnTexts.join(' '));
-    for (const fs of fnSents) {
-      result.push({ text: fs, type: 'footnote', fnGroup: pg });
-    }
-    result.push({ text: '__FN_END__', type: 'fn_end', fnGroup: pg });
-    fnGroupIdx++;
-  }
-
-  return result;
-}
-
-// ══════════════════════════════════════════════
-//  FILE / TEXT PROCESSING
-// ══════════════════════════════════════════════
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
-    const s = document.createElement('script');
-    s.src = src; s.onload = resolve; s.onerror = reject;
-    document.head.appendChild(s);
+      closeToc();
+    };
+    list.appendChild(btn);
   });
 }
 
-async function loadJSZip() {
+function updateTocHighlight() {
+  if (chunks.length === 0 || tocData.length === 0) return;
+  const currentPage = chunks[current].page || 1;
+  const items = S('toc-list').querySelectorAll('.toc-item');
+  items.forEach(i => i.classList.remove('active'));
+  
+  let activeIdx = -1;
+  for (let i = 0; i < tocData.length; i++) {
+    if (tocData[i].page <= currentPage) activeIdx = i;
+    else break;
+  }
+  if (activeIdx >= 0 && items[activeIdx]) items[activeIdx].classList.add('active');
+}
+
+const openToc = () => { S('toc-sidebar').classList.add('active'); S('toc-overlay').classList.add('active'); updateTocHighlight(); stopPlay(); playing = false; S('btn-play').textContent = '▶'; };
+const closeToc = () => { S('toc-sidebar').classList.remove('active'); S('toc-overlay').classList.remove('active'); };
+S('btn-open-toc').addEventListener('click', openToc);
+S('btn-close-toc').addEventListener('click', closeToc);
+S('toc-overlay').addEventListener('click', closeToc);
+
+// ══════════════════════════════════════════════
+//  PARSING TEXT & IMAGES
+// ══════════════════════════════════════════════
+function cleanText(t) { return t.replace(/\r\n/g, '\n').replace(/[ \t]+/g, ' ').trim(); }
+
+function splitToChunks(text, pageNum) {
+  let result = [];
+  if (chunkMode === 'words') {
+    const words = cleanText(text).split(/\s+/).filter(Boolean);
+    for (let i = 0; i < words.length; i += wordsPerChunk) {
+      result.push({ text: words.slice(i, i + wordsPerChunk).join(' '), type: 'text', page: pageNum });
+    }
+  } else {
+    // Sentence split
+    const raw = text.split(/(?<=[.!?…])\s+(?=[A-Z0-9\u00C0-\u024F"'])/g);
+    raw.forEach(s => {
+      const cln = s.trim();
+      if(cln.length > 2) result.push({ text: cln, type: 'text', page: pageNum });
+    });
+  }
+  return result;
+}
+
+function loadScript(src) {
+  return new Promise(r => {
+    if (document.querySelector(`script[src="${src}"]`)) return r();
+    let s = document.createElement('script'); s.src = src; s.onload = r; document.head.appendChild(s);
+  });
+}
+
+// PDF EXTRACTOR
+async function extractPdf(file) {
+  if (!pdfLib) {
+    await loadScript(PDFJS_URL);
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    pdfLib = pdfjsLib;
+  }
+  const ab = await file.arrayBuffer();
+  const pdf = await pdfLib.getDocument({ data: ab }).promise;
+  
+  // 1. Ambil TOC (Daftar Isi)
+  let extractedToc = [];
+  try {
+    const outline = await pdf.getOutline();
+    if (outline) {
+      for (let item of outline) {
+        let dest = typeof item.dest === 'string' ? await pdf.getDestination(item.dest) : item.dest;
+        if (dest) {
+          let pageIdx = await pdf.getPageIndex(dest[0]);
+          extractedToc.push({ title: item.title, page: pageIdx + 1 });
+        }
+      }
+    }
+  } catch(e) { console.warn("TOC Error", e); }
+
+  // 2. Ambil Teks per halaman
+  let tempChunks = [];
+  for (let p = 1; p <= pdf.numPages; p++) {
+    const page = await pdf.getPage(p);
+    const content = await page.getTextContent();
+    const pageText = content.items.map(it => it.str).join(' ');
+    
+    // Pecah jadi chunks teks
+    const sents = splitToChunks(pageText, p);
+    tempChunks.push(...sents);
+  }
+
+  tocData = extractedToc;
+  return tempChunks;
+}
+
+// EPUB EXTRACTOR (Mendukung Gambar & TOC)
+async function extractEpub(file) {
   await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
-  return JSZip;
-}
+  const zip = await JSZip.loadAsync(await file.arrayBuffer());
+  
+  let htmlFiles = Object.keys(zip.files).filter(n => n.match(/\.(html|htm|xhtml)$/i)).sort();
+  let tempChunks = [];
+  let pageCounter = 1;
+  let extractedToc = [];
 
-async function extractTextSimple(file) {
-  const name = file.name.toLowerCase();
-  if (name.endsWith('.txt')) return { body: await file.text(), footnotes: {} };
-  if (name.endsWith('.epub')) {
-    const JSZip = await loadJSZip();
-    const ab = await file.arrayBuffer();
-    const zip = await JSZip.loadAsync(ab);
-    let full = '';
-    const htmlFiles = Object.keys(zip.files).filter(n => n.match(/\.(html|htm|xhtml)$/i)).sort();
-    for (const fn of htmlFiles) {
-      const content = await zip.files[fn].async('text');
-      const div = document.createElement('div');
-      div.innerHTML = content;
-      full += (div.textContent || div.innerText || '') + '\n\n';
+  for (const fn of htmlFiles) {
+    const content = await zip.files[fn].async('string');
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, 'text/html');
+
+    // Coba tangkap header sebagai TOC sederhana jika tidak ada ncx
+    const h1 = doc.querySelector('h1, h2');
+    if (h1 && h1.innerText.trim()) {
+      extractedToc.push({ title: h1.innerText.trim().substring(0,40), page: pageCounter });
     }
-    return { body: full, footnotes: {} };
-  }
-  throw new Error('Format tidak didukung');
-}
 
-fileInput.addEventListener('change', async () => {
-  const file = fileInput.files[0];
-  if (file) await processFile(file);
-});
-
-dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragging'); });
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragging'));
-dropZone.addEventListener('drop', async e => {
-  e.preventDefault(); dropZone.classList.remove('dragging');
-  const file = e.dataTransfer.files[0];
-  if (file) await processFile(file);
-});
-
-let parsedResult = null;
-
-async function cleanWithAI(rawText, onProgress) {
-  const SEGMENT = 3000;
-  const segments = [];
-  for (let i = 0; i < rawText.length; i += SEGMENT) {
-    segments.push(rawText.slice(i, i + SEGMENT));
-  }
-
-  onProgress(`Menganalisis ${segments.length} segmen dengan AI…`);
-
-  const SYSTEM = `Kamu adalah sistem pembersih teks. 
-Kembalikan HANYA JSON:
-{
-  "body": "teks utama yang bersih",
-  "footnotes": "catatan kaki jika ada, string kosong jika tidak"
-}`;
-
-  const results = await Promise.all(segments.map(async (seg, i) => {
-    onProgress(`Membersihkan bagian ${i + 1} dari ${segments.length}…`);
-    try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: SYSTEM,
-          messages: [{ role: 'user', content: seg }]
-        })
-      });
-      const data = await resp.json();
-      const raw = data.content?.[0]?.text || '{}';
-      const clean = raw.replace(/^```json\s*/i, '').replace(/```\s*$/, '').trim();
-      return JSON.parse(clean);
-    } catch {
-      return { body: seg, footnotes: '' };
+    // Traverse DOM untuk urutan Teks dan Gambar
+    const walker = document.createTreeWalker(doc.body, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const txt = node.textContent.trim();
+        if (txt.length > 10) {
+          tempChunks.push(...splitToChunks(txt, pageCounter));
+        }
+      } else if (node.tagName && node.tagName.toLowerCase() === 'img') {
+        const src = node.getAttribute('src');
+        if (src) {
+          // Cari file gambar di zip (resolve path)
+          const imgPathMatch = Object.keys(zip.files).find(k => k.endsWith(src.split('/').pop()));
+          if (imgPathMatch) {
+            const base64 = await zip.files[imgPathMatch].async('base64');
+            const ext = imgPathMatch.split('.').pop();
+            tempChunks.push({ type: 'image', src: `data:image/${ext};base64,${base64}`, page: pageCounter });
+          }
+        }
+      }
     }
-  }));
-
-  const body = results.map(r => r.body || '').join('\n\n');
-  const fnText = results.map(r => r.footnotes || '').filter(Boolean).join('\n');
-
-  const footnotes = fnText.trim() ? { 1: [fnText] } : {};
-  return { body, footnotes };
+    pageCounter++;
+  }
+  tocData = extractedToc;
+  return tempChunks;
 }
 
-async function processFile(file) {
-  setLoading(true, 'Mengekstrak teks dari dokumen…');
-  btnStart.disabled = true;
+// ══════════════════════════════════════════════
+//  UI & PLAYBACK LOGIC
+// ══════════════════════════════════════════════
+S('file-input').addEventListener('change', async () => {
+  const file = S('file-input').files[0];
+  if (!file) return;
+  
+  S('loading-bar').classList.add('active'); S('loading-label').classList.add('active');
+  S('btn-start').disabled = true;
+
   try {
     const name = file.name.toLowerCase();
-    let rawResult;
-
     if (name.endsWith('.pdf')) {
-      rawResult = await extractPdfSmart(file);
+      chunks = await extractPdf(file);
+    } else if (name.endsWith('.epub')) {
+      chunks = await extractEpub(file);
     } else {
-      rawResult = await extractTextSimple(file);
+      const text = await file.text();
+      tocData = [];
+      chunks = splitToChunks(text, 1);
     }
-
-    const needsCleaning = name.endsWith('.pdf') || rawResult.body.length > 200;
-
-    if (needsCleaning) {
-      setLoading(true, 'AI sedang merapikan teks…');
-      parsedResult = await cleanWithAI(
-        rawResult.body,
-        (msg) => setLoading(true, msg)
-      );
-      const mergedFn = { ...rawResult.footnotes };
-      if (parsedResult.footnotes[1]) {
-        const nextKey = Math.max(0, ...Object.keys(mergedFn).map(Number)) + 1;
-        mergedFn[nextKey] = parsedResult.footnotes[1];
-      }
-      parsedResult.footnotes = mergedFn;
-    } else {
-      parsedResult = rawResult;
-    }
-
-    pasteInput.value = parsedResult.body;
-    validate();
-  } catch (e) {
-    alert('Gagal memproses file: ' + e.message);
-  }
-  setLoading(false, '');
-}
-
-function setLoading(on, msg = '') {
-  loadingBar.classList.toggle('active', on);
-  loadingLabel.classList.toggle('active', on);
-  if (msg) loadingLabel.textContent = msg;
-  const aiBadge = document.getElementById('ai-badge');
-  if (aiBadge) aiBadge.style.display = (on && msg.includes('AI')) ? 'flex' : 'none';
-}
-
-pasteInput.addEventListener('input', () => {
-  parsedResult = null;
-  validate();
+    S('paste-input').value = `[File Dimuat: ${file.name}]\nTotal Potongan: ${chunks.length}`;
+    S('btn-start').disabled = false;
+  } catch(e) { alert("Gagal memproses: " + e.message); }
+  
+  S('loading-bar').classList.remove('active'); S('loading-label').classList.remove('active');
 });
 
-function validate() {
-  btnStart.disabled = pasteInput.value.trim().length < 10;
-}
-
-// ══════════════════════════════════════════════
-//  START READING
-// ══════════════════════════════════════════════
-btnStart.addEventListener('click', () => {
-  const text = pasteInput.value.trim();
-  if (!text) return;
-
-  let result = parsedResult || { body: text, footnotes: {} };
-  if (!parsedResult) result = { body: text, footnotes: {} };
-
-  chunks = buildChunkArray(result.body, result.footnotes);
-  if (chunks.length === 0) { alert('Tidak ada teks yang bisa diproses.'); return; }
-
+// START
+S('btn-start').addEventListener('click', () => {
+  if (chunks.length === 0) {
+    const txt = S('paste-input').value;
+    tocData = []; chunks = splitToChunks(txt, 1);
+  }
+  if (chunks.length === 0) return;
+  
   current = 0;
-  pendingFootnoteGroup = null;
   showScreen('reader-screen');
-  chunkText.style.fontSize = `${baseFontSize}rem`;
+  updateFont();
+  renderToc();
   renderChunk(current, true);
 });
 
-// ══════════════════════════════════════════════
-//  RENDER CHUNK
-// ══════════════════════════════════════════════
+// RESUME
+if (localStorage.getItem('nexta_state')) S('btn-resume').style.display = 'inline-flex';
+S('btn-resume').addEventListener('click', () => {
+  const state = JSON.parse(localStorage.getItem('nexta_state'));
+  chunks = state.chunks; tocData = state.toc; current = state.current;
+  showScreen('reader-screen'); updateFont(); renderToc(); renderChunk(current, true);
+});
+
+function getDelay() { return Math.round(8500 - (parseInt(S('speed-range').value) - 1) * 750); }
+
 function renderChunk(idx, skipAnim = false) {
   const ch = chunks[idx];
   if (!ch) return;
 
-  if (ch.type === 'fn_end') {
-    const fnGroup = ch.fnGroup;
-    const fnCount = chunks.filter(c => c.type === 'footnote' && c.fnGroup === fnGroup).length;
-    pendingFootnoteGroup = fnGroup;
+  const txtEl = S('chunk-text');
+  const imgEl = S('chunk-img');
 
-    stopPlay();
-    playing = false;
-    btnPlay.textContent = '▶';
-
-    fnSubText.textContent = `Halaman ini memiliki ${fnCount} catatan kaki. Ingin membacanya?`;
-    footnoteDialog.classList.add('active');
-    return;
-  }
-
-  const isFn = ch.type === 'footnote';
-
-  if (skipAnim) {
-    chunkText.textContent = ch.text;
-    chunkText.classList.add('visible');
+  if (ch.type === 'image') {
+    txtEl.classList.remove('visible');
+    setTimeout(() => { txtEl.style.display = 'none'; imgEl.style.display = 'block'; imgEl.src = ch.src; imgEl.classList.add('visible'); }, skipAnim ? 0 : 200);
   } else {
-    chunkText.classList.remove('visible');
+    imgEl.classList.remove('visible');
     setTimeout(() => {
-      chunkText.textContent = ch.text;
-      chunkText.classList.add('visible');
-    }, 200);
+      imgEl.style.display = 'none'; txtEl.style.display = 'block';
+      txtEl.textContent = ch.text;
+      txtEl.classList.add('visible');
+    }, skipAnim ? 0 : 200);
   }
 
-  chunkBadge.style.display = isFn ? 'inline-block' : 'none';
-  chunkBadge.classList.toggle('footnote', isFn);
-
-  const displayChunks = chunks.filter(c => c.type !== 'fn_end');
-  const displayIdx = displayChunks.findIndex(c => c === ch);
-  topbarCounter.textContent = `${Math.max(1, displayIdx + 1)} / ${displayChunks.length}`;
-  progressFill.style.width = ((displayIdx + 1) / displayChunks.length * 100) + '%';
+  S('topbar-counter').textContent = `${idx + 1} / ${chunks.length}`;
+  S('progress-fill').style.width = ((idx + 1) / chunks.length * 100) + '%';
   
-  updateEstimateLabel();
-  saveProgress();
+  const remain = chunks.length - idx - 1;
+  S('time-estimate').textContent = remain <= 0 ? 'Selesai' : `~${Math.ceil((remain * getDelay()) / 60000)} mnt`;
+  
+  try { localStorage.setItem('nexta_state', JSON.stringify({ chunks, toc: tocData, current: idx })); S('btn-resume').style.display = 'inline-flex'; } catch(e){}
 }
 
-// ══════════════════════════════════════════════
-//  FOOTNOTE DIALOG
-// ══════════════════════════════════════════════
-fnSkip.addEventListener('click', () => {
-  footnoteDialog.classList.remove('active');
-  if (pendingFootnoteGroup !== null) {
-    let i = current + 1;
-    while (i < chunks.length && (chunks[i].type === 'footnote' || chunks[i].type === 'fn_end') && chunks[i].fnGroup === pendingFootnoteGroup) {
-      i++;
-    }
-    current = i < chunks.length ? i : chunks.length - 1;
-  }
-  pendingFootnoteGroup = null;
-  if (current < chunks.length) renderChunk(current, true);
-  else showEnd();
-});
-
-fnRead.addEventListener('click', () => {
-  footnoteDialog.classList.remove('active');
-  if (pendingFootnoteGroup !== null) {
-    const fnStart = chunks.findIndex(c => c.type === 'footnote' && c.fnGroup === pendingFootnoteGroup);
-    if (fnStart >= 0) current = fnStart;
-  }
-  pendingFootnoteGroup = null;
-  renderChunk(current, true);
-});
-
-// ══════════════════════════════════════════════
-//  NAVIGATION
-// ══════════════════════════════════════════════
 function advance(dir) {
-  stopPlay();
-  playing = false;
-  btnPlay.textContent = '▶';
-  footnoteDialog.classList.remove('active');
-
-  let next = current + dir;
-  while (next >= 0 && next < chunks.length && chunks[next].type === 'fn_end') {
-    next += dir;
-  }
-  if (next < 0 || next >= chunks.length) return;
-  current = next;
-  renderChunk(current);
+  stopPlay(); playing = false; S('btn-play').textContent = '▶';
+  if (current + dir >= 0 && current + dir < chunks.length) { current += dir; renderChunk(current); }
 }
 
-btnPrev.addEventListener('click', () => advance(-1));
-btnNext.addEventListener('click', () => advance(1));
+S('btn-prev').onclick = () => advance(-1);
+S('btn-next').onclick = () => advance(1);
+S('btn-play').onclick = () => { playing = !playing; S('btn-play').textContent = playing ? '⏸' : '▶'; if(playing) schedule(); else stopPlay(); };
+S('speed-range').oninput = () => { S('time-estimate').textContent = `~${Math.ceil(((chunks.length - current - 1) * getDelay()) / 60000)} mnt`; };
 
-// ══════════════════════════════════════════════
-//  AUTOPLAY
-// ══════════════════════════════════════════════
-btnPlay.addEventListener('click', togglePlay);
-
-function togglePlay() {
-  playing = !playing;
-  btnPlay.textContent = playing ? '⏸' : '▶';
-  if (playing) scheduleNext();
-  else stopPlay();
-}
-
-function scheduleNext() {
-  stopPlay();
-  if (!playing) return;
+function schedule() {
+  stopPlay(); if (!playing) return;
   timer = setTimeout(() => {
-    const next = current + 1;
-    if (next >= chunks.length) {
-      stopPlay(); playing = false; btnPlay.textContent = '▶';
-      showEnd(); return;
-    }
-    current = next;
-    renderChunk(current);
-    if (playing) scheduleNext();
+    if (current + 1 >= chunks.length) { stopPlay(); playing = false; S('btn-play').textContent = '▶'; S('end-overlay').classList.add('active'); return; }
+    current++; renderChunk(current); schedule();
   }, getDelay());
 }
+function stopPlay() { if (timer) clearTimeout(timer); }
 
-function stopPlay() {
-  if (timer) { clearTimeout(timer); timer = null; }
-}
+S('btn-back-welcome').onclick = () => showScreen('welcome-screen');
+S('btn-back-reader').onclick = () => { stopPlay(); showScreen('upload-screen'); };
+S('btn-to-upload').onclick = () => { chunks=[]; tocData=[]; showScreen('upload-screen'); };
+S('btn-restart').onclick = () => { S('end-overlay').classList.remove('active'); current = 0; renderChunk(current, true); };
+S('btn-end-back').onclick = () => { S('end-overlay').classList.remove('active'); showScreen('upload-screen'); };
 
-function showEnd() {
-  endOverlay.classList.add('active');
-}
-
-btnRestart.addEventListener('click', () => {
-  endOverlay.classList.remove('active');
-  current = 0;
-  renderChunk(current, true);
-});
-
-// ══════════════════════════════════════════════
-//  KEYBOARD
-// ══════════════════════════════════════════════
 document.addEventListener('keydown', e => {
-  if (!readerScreen.classList.contains('active')) return;
-  if (e.key === 'ArrowRight') { e.preventDefault(); advance(1); }
-  if (e.key === 'ArrowLeft')  { e.preventDefault(); advance(-1); }
-  if (e.key === ' ')          { e.preventDefault(); togglePlay(); }
+  if (!S('reader-screen').classList.contains('active') || S('toc-overlay').classList.contains('active')) return;
+  if (e.key === 'ArrowRight') advance(1);
+  if (e.key === 'ArrowLeft') advance(-1);
+  if (e.key === ' ') { e.preventDefault(); S('btn-play').click(); }
 });
 </script>
 </body>
