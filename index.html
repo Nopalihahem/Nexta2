@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lensa — Baca Satu Kalimat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Tema Gelap (Default) */
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --text: #e8e0d5;
+    --text-dim: #6b6560;
+    --accent: #c8a96e;
+    --accent-dim: #7a6540;
+    --danger: #c86e6e;
+  }
+
+  /* Tema Terang */
+  body.light-mode {
+    --bg: #f4f0ea;
+    --surface: #ffffff;
+    --surface2: #e8e4de;
+    --border: #d1c8bb;
+    --text: #2c2a28;
+    --text-dim: #736b60;
+    --accent: #a67c40;
+    --accent-dim: #b89c74;
+    --danger: #b34d4d;
+  }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  /* ─── NOISE TEXTURE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+  
+  body.light-mode::before {
+    opacity: 0.15; /* Kurangi noise di light mode */
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    padding: 1.5rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+  }
+
+  .logo span { font-style: italic; }
+
+  .header-meta {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ─── MAIN ─── */
+  main { flex: 1; display: flex; flex-direction: column; }
+
+  /* ─── UPLOAD SCREEN ─── */
+  #upload-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    gap: 2.5rem;
+  }
+
+  .upload-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    text-align: center;
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  .upload-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .upload-subtitle {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .upload-zone {
+    width: 100%;
+    max-width: 520px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 2px;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+
+  .upload-zone:hover, .upload-zone.dragging {
+    border-color: var(--accent-dim);
+    background: var(--surface2);
+  }
+
+  .upload-zone input[type=file] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .upload-icon {
+    font-size: 2rem;
+    color: var(--accent-dim);
+  }
+
+  .upload-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  .upload-label strong {
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .file-types {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .file-type-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: 1px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 520px;
+    color: var(--text-dim);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .paste-area {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  .paste-area textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 300;
+    padding: 1.2rem;
+    resize: vertical;
+    min-height: 120px;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+    line-height: 1.6;
+  }
+
+  .paste-area textarea:focus { border-color: var(--accent-dim); }
+  .paste-area textarea::placeholder { color: var(--text-dim); }
+
+  .btn-start {
+    width: 100%;
+    max-width: 520px;
+    padding: 0.9rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: opacity 0.2s;
+  }
+
+  .btn-start:hover { opacity: 0.85; }
+  .btn-start:disabled { opacity: 0.3; cursor: not-allowed; }
+  
+  .btn-resume {
+    background: var(--surface2);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    margin-top: -1rem;
+  }
+
+  /* ─── READER SCREEN ─── */
+  #reader-screen {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  #reader-screen.active { display: flex; }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    height: 2px;
+    background: var(--border);
+    position: relative;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  /* Sentence stage */
+  .sentence-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    position: relative;
+  }
+
+  .sentence-counter {
+    position: absolute;
+    top: 2rem;
+    right: 2.5rem;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+  
+  .time-estimate {
+    position: absolute;
+    top: 2rem;
+    left: 2.5rem;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .sentence-display {
+    max-width: 680px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .sentence-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.4rem, 3.5vw, 2.4rem); /* Akan di-override JS untuk custom size */
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.35s ease, transform 0.35s ease, font-size 0.2s;
+    min-height: 4rem;
+  }
+
+  .sentence-text.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Controls */
+  .reader-controls {
+    padding: 2rem 2.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .ctrl-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    text-transform: uppercase;
+  }
+
+  .ctrl-btn:hover { border-color: var(--accent-dim); color: var(--accent); }
+  .ctrl-btn.primary {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    font-size: 0.7rem;
+    padding: 0.7rem 2rem;
+  }
+  .ctrl-btn.primary:hover { opacity: 0.85; color: var(--bg); }
+  .ctrl-btn.danger { border-color: var(--danger); color: var(--danger); }
+
+  .speed-control {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+
+  .speed-control input[type=range] {
+    -webkit-appearance: none;
+    width: 80px;
+    height: 2px;
+    background: var(--border);
+    outline: none;
+  }
+  .speed-control input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .speed-val {
+    color: var(--accent);
+    min-width: 2.5rem;
+    text-align: center;
+  }
+
+  /* End screen */
+  .end-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(13,13,13,0.93);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 100;
+    text-align: center;
+  }
+  
+  body.light-mode .end-overlay {
+    background: rgba(244, 240, 234, 0.93);
+  }
+
+  .end-overlay.active { display: flex; }
+
+  .end-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--accent);
+  }
+
+  .end-sub {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Loading */
+  .loading-indicator {
+    display: none;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-align: center;
+    padding: 1rem;
+    animation: pulse 1.5s infinite;
+  }
+  .loading-indicator.active { display: block; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* Keyboard hint */
+  .key-hint {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .key {
+    display: inline-block;
+    border: 1px solid var(--border);
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+    margin: 0 0.15rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <div class="logo"><span>L</span>ensa</div>
+  <div style="display:flex; align-items:center; gap: 1.5rem;">
+    <div class="header-meta">Baca kalimat per kalimat</div>
+    <button id="theme-toggle" class="ctrl-btn" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background: transparent; border:none;" title="Ganti Tema">☀️</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ─── UPLOAD SCREEN ─── -->
+<div id="upload-screen">
+  <div>
+    <h1 class="upload-title">Baca dengan <em>tenang</em>,<br>satu kalimat.</h1>
+    <p class="upload-subtitle" style="margin-top:1rem;">Unggah teks Anda dan mulai membaca tanpa scroll</p>
+  </div>
+
+  <!-- File upload -->
+  <div class="upload-zone" id="drop-zone">
+    <input type="file" id="file-input" accept=".txt,.epub,application/pdf,text/plain">
+    <div class="upload-icon">⬆</div>
+    <div class="upload-label">
+      <strong>Klik untuk unggah</strong> atau seret file ke sini
+    </div>
+    <div class="file-types">
+      <span class="file-type-tag">TXT</span>
+      <span class="file-type-tag">PDF</span>
+      <span class="file-type-tag">EPUB</span>
+    </div>
+  </div>
+
+  <div class="divider">atau tempel teks</div>
+
+  <!-- Paste area -->
+  <div class="paste-area">
+    <textarea id="paste-input" placeholder="Tempel teks Anda di sini..."></textarea>
+  </div>
+
+  <div id="loading-msg" class="loading-indicator">Memproses teks...</div>
+
+  <div style="width:100%;max-width:520px;display:flex;flex-direction:column;gap:0.8rem;">
+    <!-- Mode selector -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.8rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:2px;">
+      <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);">Mode tampilan</span>
+      <select id="mode-select" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.08em;padding:0.3rem 0.6rem;outline:none;cursor:pointer;border-radius:2px;">
+        <option value="sentence">Per kalimat</option>
+        <option value="words">Per jumlah kata</option>
+      </select>
+    </div>
+
+    <!-- Word count (hidden by default) -->
+    <div id="word-count-wrap" style="display:none;align-items:center;justify-content:space-between;padding:0.8rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:2px;">
+      <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);">Jumlah kata</span>
+      <div style="display:flex;align-items:center;gap:0.8rem;">
+        <input type="range" id="word-count-input" min="1" max="20" value="5"
+          style="-webkit-appearance:none;width:100px;height:2px;background:var(--border);outline:none;cursor:pointer;">
+        <span id="word-count-val" style="font-size:0.65rem;color:var(--accent);min-width:3.5rem;text-align:right;letter-spacing:0.06em;">5 kata</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-start" id="btn-start" disabled>Mulai Membaca</button>
+  <button class="btn-start btn-resume" id="btn-resume" style="display:none;">Lanjutkan Membaca Sebelumnya</button>
+</div>
+
+<!-- ─── READER SCREEN ─── -->
+<div id="reader-screen">
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-fill"></div>
+  </div>
+
+  <div class="sentence-stage">
+    <div class="time-estimate" id="time-estimate">Estimasi: -</div>
+    <div class="sentence-counter" id="sentence-counter">1 / 1</div>
+    <div class="sentence-display">
+      <p class="sentence-text visible" id="sentence-text"></p>
+    </div>
+    <div class="key-hint">
+      <span class="key">←</span> Sebelumnya &nbsp;
+      <span class="key">Space</span> Putar/Jeda &nbsp;
+      <span class="key">→</span> Berikutnya
+    </div>
+  </div>
+
+  <div class="reader-controls">
+    <button class="ctrl-btn" id="btn-prev">←</button>
+    <button class="ctrl-btn primary" id="btn-play">▶ Putar</button>
+    <button class="ctrl-btn" id="btn-next">→</button>
+
+    <div class="speed-control">
+      <span>Kecepatan</span>
+      <input type="range" id="speed-range" min="1" max="10" value="5">
+      <span class="speed-val" id="speed-val">5s</span>
+    </div>
+    
+    <!-- Kontrol Ukuran Font -->
+    <div style="display:flex; gap:0.3rem;">
+      <button class="ctrl-btn" id="btn-font-dec" title="Perkecil Teks">A-</button>
+      <button class="ctrl-btn" id="btn-font-inc" title="Perbesar Teks">A+</button>
+    </div>
+
+    <button class="ctrl-btn danger" id="btn-back">✕ Kembali</button>
+  </div>
+</div>
+
+</main>
+
+<!-- End overlay -->
+<div class="end-overlay" id="end-overlay">
+  <div class="end-title">Selesai ✦</div>
+  <div class="end-sub">Anda telah membaca seluruh teks</div>
+  <button class="ctrl-btn primary" id="btn-restart">Baca Ulang</button>
+  <button class="ctrl-btn" id="btn-back2">Kembali ke Awal</button>
+</div>
+
+<script>
+// ─── PDF.js via CDN ───
+const PDFJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+
+let sentences = [];
+let current = 0;
+let playing = false;
+let timer = null;
+let pdfLib = null;
+let chunkMode = 'sentence'; // 'sentence' | 'words'
+let wordsPerChunk = 5;
+let baseFontSize = 2.4; // Default rem size
+
+// ─── DOM ───
+const uploadScreen = document.getElementById('upload-screen');
+const readerScreen = document.getElementById('reader-screen');
+const fileInput = document.getElementById('file-input');
+const pasteInput = document.getElementById('paste-input');
+const btnStart = document.getElementById('btn-start');
+const btnResume = document.getElementById('btn-resume');
+const btnPlay = document.getElementById('btn-play');
+const btnPrev = document.getElementById('btn-prev');
+const btnNext = document.getElementById('btn-next');
+const btnBack = document.getElementById('btn-back');
+const btnBack2 = document.getElementById('btn-back2');
+const btnRestart = document.getElementById('btn-restart');
+const sentenceText = document.getElementById('sentence-text');
+const sentenceCounter = document.getElementById('sentence-counter');
+const timeEstimate = document.getElementById('time-estimate');
+const progressFill = document.getElementById('progress-fill');
+const speedRange = document.getElementById('speed-range');
+const speedVal = document.getElementById('speed-val');
+const endOverlay = document.getElementById('end-overlay');
+const dropZone = document.getElementById('drop-zone');
+const loadingMsg = document.getElementById('loading-msg');
+const modeSelect = document.getElementById('mode-select');
+const wordCountWrap = document.getElementById('word-count-wrap');
+const wordCountInput = document.getElementById('word-count-input');
+const wordCountVal = document.getElementById('word-count-val');
+const themeToggle = document.getElementById('theme-toggle');
+const btnFontInc = document.getElementById('btn-font-inc');
+const btnFontDec = document.getElementById('btn-font-dec');
+
+// ─── INIT THEME & FONT SIZE ───
+let isLight = localStorage.getItem('lensa_theme') === 'light';
+if (isLight) document.body.classList.add('light-mode');
+themeToggle.textContent = isLight ? '🌙' : '☀️';
+
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('light-mode');
+  isLight = document.body.classList.contains('light-mode');
+  localStorage.setItem('lensa_theme', isLight ? 'light' : 'dark');
+  themeToggle.textContent = isLight ? '🌙' : '☀️';
+});
+
+const savedFontSize = localStorage.getItem('lensa_fontsize');
+if (savedFontSize) {
+  baseFontSize = parseFloat(savedFontSize);
+  sentenceText.style.fontSize = `${baseFontSize}rem`;
+}
+
+function updateFontSize() {
+  sentenceText.style.fontSize = `${baseFontSize}rem`;
+  localStorage.setItem('lensa_fontsize', baseFontSize);
+}
+
+btnFontInc.addEventListener('click', () => {
+  baseFontSize = Math.min(5, baseFontSize + 0.2);
+  updateFontSize();
+});
+
+btnFontDec.addEventListener('click', () => {
+  baseFontSize = Math.max(1, baseFontSize - 0.2);
+  updateFontSize();
+});
+
+// ─── INIT RESUME PROGRESS ───
+if (localStorage.getItem('lensa_text') && localStorage.getItem('lensa_current')) {
+  btnResume.style.display = 'block';
+}
+
+btnResume.addEventListener('click', () => {
+  pasteInput.value = localStorage.getItem('lensa_text') || '';
+  chunkMode = localStorage.getItem('lensa_mode') || 'sentence';
+  wordsPerChunk = parseInt(localStorage.getItem('lensa_words')) || 5;
+  current = parseInt(localStorage.getItem('lensa_current')) || 0;
+  
+  modeSelect.value = chunkMode;
+  if(chunkMode === 'words') {
+    wordCountWrap.style.display = 'flex';
+    wordCountInput.value = wordsPerChunk;
+    wordCountVal.textContent = wordsPerChunk + ' kata';
+  }
+  
+  sentences = buildChunks(pasteInput.value);
+  validate();
+  if(sentences.length > 0) {
+    showReader();
+    showSentence(current, true);
+  }
+});
+
+function saveProgress() {
+  try {
+    localStorage.setItem('lensa_text', pasteInput.value);
+    localStorage.setItem('lensa_current', current);
+    localStorage.setItem('lensa_mode', chunkMode);
+    localStorage.setItem('lensa_words', wordsPerChunk);
+    btnResume.style.display = 'block';
+  } catch(e) {
+    console.warn("Storage penuh, progress tidak tersimpan.");
+  }
+}
+
+// ─── SPEED & TIME ESTIMATE ───
+function getDelay() {
+  const v = parseInt(speedRange.value);
+  return Math.round(9000 - (v - 1) * 800);
+}
+
+function updateEstimate() {
+  const remaining = sentences.length - current - 1;
+  if (remaining <= 0) {
+    timeEstimate.textContent = 'Selesai';
+    return;
+  }
+  const msRemaining = remaining * getDelay();
+  const mins = Math.ceil(msRemaining / 60000);
+  timeEstimate.textContent = `Estimasi: ~${mins} menit`;
+}
+
+speedRange.addEventListener('input', () => {
+  speedVal.textContent = getDelay() / 1000 + 's';
+  updateEstimate();
+});
+speedVal.textContent = getDelay() / 1000 + 's';
+
+// ─── TEXT CHUNKER ───
+function cleanText(text) {
+  return text
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/[ \t]+/g, ' ')
+    .trim();
+}
+
+function splitSentences(text) {
+  text = cleanText(text);
+  const chunks = [];
+  let buf = '';
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    buf += ch;
+
+    const isPunct = /[.!?…]/.test(ch);
+    if (isPunct) {
+      let j = i + 1;
+      while (j < text.length && text[j] === ' ') j++;
+      const nextCh = text[j];
+      const isEnd = j >= text.length || /[\n"'»]/.test(nextCh) || /[A-Z\u00C0-\u024F]/.test(nextCh);
+      if (isEnd) {
+        const s = buf.trim();
+        if (s.length > 2) chunks.push(s);
+        buf = '';
+        i = j - 1;
+      }
+    } else if (ch === '\n') {
+      const s = buf.replace(/\n/g, ' ').trim();
+      if (s.length > 2) chunks.push(s);
+      buf = '';
+    }
+  }
+  if (buf.trim().length > 2) chunks.push(buf.trim());
+
+  const merged = [];
+  for (let i = 0; i < chunks.length; i++) {
+    if (i > 0 && chunks[i].length < 20) {
+      merged[merged.length - 1] += ' ' + chunks[i];
+    } else {
+      merged.push(chunks[i]);
+    }
+  }
+  return merged;
+}
+
+function splitByWords(text, n) {
+  text = cleanText(text);
+  const words = text.split(/\s+/).filter(Boolean);
+  const chunks = [];
+  for (let i = 0; i < words.length; i += n) {
+    chunks.push(words.slice(i, i + n).join(' '));
+  }
+  return chunks;
+}
+
+function buildChunks(text) {
+  if (chunkMode === 'words') return splitByWords(text, wordsPerChunk);
+  return splitSentences(text);
+}
+
+// ─── TEXT EXTRACTION ───
+async function extractText(file) {
+  const name = file.name.toLowerCase();
+
+  if (name.endsWith('.txt')) {
+    return await file.text();
+  }
+
+  if (name.endsWith('.pdf')) {
+    if (!pdfLib) {
+      await loadScript(PDFJS_URL);
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      pdfLib = pdfjsLib;
+    }
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfLib.getDocument({ data: arrayBuffer }).promise;
+    let fullText = '';
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      fullText += content.items.map(item => item.str).join(' ') + '\n';
+    }
+    return fullText;
+  }
+
+  if (name.endsWith('.epub')) {
+    const JSZip = await loadJSZip();
+    const arrayBuffer = await file.arrayBuffer();
+    const zip = await JSZip.loadAsync(arrayBuffer);
+    let fullText = '';
+    const htmlFiles = Object.keys(zip.files).filter(n =>
+      n.match(/\.(html|htm|xhtml)$/i)
+    ).sort();
+    for (const fname of htmlFiles) {
+      const content = await zip.files[fname].async('text');
+      const div = document.createElement('div');
+      div.innerHTML = content;
+      fullText += (div.textContent || div.innerText || '') + '\n\n';
+    }
+    return fullText;
+  }
+
+  throw new Error('Format tidak didukung: ' + file.name);
+}
+
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+async function loadJSZip() {
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+  return JSZip;
+}
+
+// ─── FILE INPUT ───
+fileInput.addEventListener('change', async () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+  await processFile(file);
+});
+
+async function processFile(file) {
+  loadingMsg.classList.add('active');
+  btnStart.disabled = true;
+  try {
+    const text = await extractText(file);
+    pasteInput.value = text;
+    validate();
+  } catch (e) {
+    alert('Gagal membaca file: ' + e.message);
+  }
+  loadingMsg.classList.remove('active');
+}
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragging'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragging'));
+dropZone.addEventListener('drop', async e => {
+  e.preventDefault();
+  dropZone.classList.remove('dragging');
+  const file = e.dataTransfer.files[0];
+  if (file) await processFile(file);
+});
+
+// ─── PASTE VALIDATION ───
+pasteInput.addEventListener('input', validate);
+function validate() {
+  btnStart.disabled = pasteInput.value.trim().length < 10;
+}
+
+// ─── MODE CONTROLS ───
+modeSelect.addEventListener('change', () => {
+  chunkMode = modeSelect.value;
+  wordCountWrap.style.display = chunkMode === 'words' ? 'flex' : 'none';
+});
+
+wordCountInput.addEventListener('input', () => {
+  wordsPerChunk = Math.max(1, Math.min(20, parseInt(wordCountInput.value) || 5));
+  wordCountInput.value = wordsPerChunk;
+  wordCountVal.textContent = wordsPerChunk + ' kata';
+});
+
+// ─── START READING ───
+btnStart.addEventListener('click', () => {
+  const text = pasteInput.value.trim();
+  if (!text) return;
+  sentences = buildChunks(text);
+  if (sentences.length === 0) { alert('Tidak ada potongan teks yang bisa diproses.'); return; }
+  current = 0;
+  showReader();
+  showSentence(current, true);
+});
+
+// ─── SHOW/HIDE SCREENS ───
+function showReader() {
+  uploadScreen.style.display = 'none';
+  readerScreen.classList.add('active');
+  sentenceText.style.fontSize = `${baseFontSize}rem`; // set initial font size
+}
+
+function showUpload() {
+  readerScreen.classList.remove('active');
+  uploadScreen.style.display = '';
+  endOverlay.classList.remove('active');
+  stopPlay();
+  playing = false;
+  btnPlay.textContent = '▶ Putar';
+}
+
+// ─── SENTENCE DISPLAY ───
+function showSentence(idx, skipAnim = false) {
+  if (!skipAnim) {
+    sentenceText.classList.remove('visible');
+    setTimeout(() => {
+      sentenceText.textContent = sentences[idx];
+      sentenceText.classList.add('visible');
+    }, 180);
+  } else {
+    sentenceText.textContent = sentences[idx];
+    sentenceText.classList.add('visible');
+  }
+
+  sentenceCounter.textContent = `${idx + 1} / ${sentences.length}`;
+  progressFill.style.width = ((idx + 1) / sentences.length * 100) + '%';
+  
+  updateEstimate();
+  saveProgress();
+}
+
+// ─── NAVIGATION ───
+btnNext.addEventListener('click', () => advance(1));
+btnPrev.addEventListener('click', () => advance(-1));
+
+function advance(dir) {
+  stopPlay();
+  playing = false;
+  btnPlay.textContent = '▶ Putar';
+  const next = current + dir;
+  if (next < 0 || next >= sentences.length) return;
+  current = next;
+  showSentence(current);
+}
+
+// ─── AUTOPLAY ───
+btnPlay.addEventListener('click', togglePlay);
+
+function togglePlay() {
+  playing = !playing;
+  if (playing) {
+    btnPlay.textContent = '⏸ Jeda';
+    scheduleNext();
+  } else {
+    stopPlay();
+    btnPlay.textContent = '▶ Putar';
+  }
+}
+
+function scheduleNext() {
+  stopPlay();
+  if (!playing) return;
+  timer = setTimeout(() => {
+    if (current + 1 >= sentences.length) {
+      stopPlay();
+      playing = false;
+      btnPlay.textContent = '▶ Putar';
+      endOverlay.classList.add('active');
+      return;
+    }
+    current++;
+    showSentence(current);
+    scheduleNext();
+  }, getDelay());
+}
+
+function stopPlay() {
+  if (timer) { clearTimeout(timer); timer = null; }
+}
+
+// ─── BACK / RESTART ───
+btnBack.addEventListener('click', showUpload);
+btnBack2.addEventListener('click', showUpload);
+btnRestart.addEventListener('click', () => {
+  endOverlay.classList.remove('active');
+  current = 0;
+  showSentence(current);
+});
+
+// ─── KEYBOARD ───
+document.addEventListener('keydown', e => {
+  if (!readerScreen.classList.contains('active')) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); advance(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); advance(-1); }
+  if (e.key === ' ') { e.preventDefault(); togglePlay(); }
+});
+</script>
+</body>
+</html>
